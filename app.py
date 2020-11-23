@@ -43,36 +43,36 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 
 
-app.layout = html.Div(
+app.layout = html.Div( style={'color': colors['text'],
+                              'backgroundColor': colors['background'],
+                              },
 
     children=[
 
         html.Div(
-            style={
-                'textAlign': 'center',
-                'color': colors['text'],
-                'backgroundColor': colors['background']
-            },
+
 
             children=[
+
                 html.H1(
-                    children='Games Revenues Visualisation Demo',
+                    children=['Games Revenues Visualisation Demo',html.H6('A Web Application for data visualisation')],
                     style={
                         'textAlign': 'center',
                         'color': colors['text'],
-                        'backgroundColor': colors['background']
+                        'backgroundColor': '#24365B',
+                        'padding-top':'50px',
+                        'padding-bottom':'20px',
+                        'margin-bottom':'50px'
                     }
                 ),
 
-                html.Div(children='A web application for data visualisation.', style={
-                    'textAlign': 'center',
-                    'color': colors['text'],
-                    'backgroundColor': colors['background']
-                })
+
             ]),
 
         html.Div(style={'display': 'flex',
-                        'flex-direction': 'row'}, children=[
+                        'flex-direction': 'row',
+                        'margin-right':'20px',
+                        'margin-left':'20px'}, children=[
 
             html.Div(style={'width': '49%'}, children=[
 
@@ -117,7 +117,9 @@ app.layout = html.Div(
           ]
         ),
          html.Div(style={'display': 'flex',
-                         'flex-direction': 'row'}, children = [
+                         'flex-direction': 'row',
+                         'margin-right':'20px',
+                         'margin-left':'20px'}, children = [
          html.Div(style={'width':'49%'},children = [
          html.Div(style = {'margin-top':'50px'}, children = [
             html.H3('Yearly Sales By Publisher'),
@@ -171,7 +173,9 @@ app.layout = html.Div(
             )
         ]),
 
-        html.Div(style = {'margin-top':'50px'},children = [
+        html.Div(style = {'margin-top':'50px',
+                          'margin-right':'20px',
+                          'margin-left':'20px'},children = [
 
             html.H3('Top 100 Selling Games by Platform'),
             html.Div('Select Platform'),
@@ -196,7 +200,7 @@ app.layout = html.Div(
 )
 def update_graph(grpname):
     import plotly.express as px
-    fig = px.pie(top_20_games[top_20_games.Publisher == grpname], values='Global_Sales', names='Name')
+    fig = px.pie(top_20_games[top_20_games.Publisher == grpname], values='Global_Sales', names='Name', template='plotly_dark')
     fix_labels_design(fig)
     return fig
 
@@ -206,7 +210,7 @@ def update_graph(grpname):
 )
 def update_graph_region(grpname):
     import plotly.express as px
-    fig = px.pie(sales, values=grpname, names='Publisher')
+    fig = px.pie(sales, values=grpname, names='Publisher', template='plotly_dark')
     fix_labels_design(fig)
     return fig
 
@@ -217,7 +221,7 @@ def update_graph_region(grpname):
 )
 def update_stacked_bar(grpname):
     import plotly.express as px
-    fig = px.bar(platform_revenues[platform_revenues.Platform == grpname], x='Global_Sales', y='Platform',color='Name', orientation='h')
+    fig = px.bar(platform_revenues[platform_revenues.Platform == grpname], x='Global_Sales', y='Platform',color='Name', orientation='h', template='plotly_dark')
     fix_labels_design(fig)
     return fig
 
@@ -228,7 +232,7 @@ def update_stacked_bar(grpname):
 )
 def update_time_bar(grpname,rgsales):
     import plotly.express as px
-    fig = px.bar(year_sales[year_sales.Publisher == grpname], x='Year_of_Release', y=rgsales)
+    fig = px.bar(year_sales[year_sales.Publisher == grpname], x='Year_of_Release', y=rgsales, template='plotly_dark')
     max_range = year_sales[year_sales.Publisher == grpname]['Global_Sales'].max()
     fig.update_yaxes(range=[0,max_range+5])
     fix_labels_design(fig)
@@ -240,7 +244,7 @@ def update_time_bar(grpname,rgsales):
 )
 def update_twitter_bar(grplist):
     import plotly.express as px
-    fig = px.bar(tweets_df, x='time', y=grplist, labels={
+    fig = px.bar(tweets_df, x='time', y=grplist, template='plotly_dark', labels={
                      "value": "Number of Tweets containing hashtag",
                      "time" : "Day"
 
